@@ -1,26 +1,38 @@
-version: '3.9'
-
-services:
-  django:
-    build: .
-    image: django-docker:0.0.1
-    command: python manage.py runserver 0.0.0.0:8000
-    ports:
-      - "8000:8000"
-    depends_on:
-      - mysql_db
-  mysql_db:
-    image: mysql:5.7.22
-    restart : always
-    environment :
-      - MYSQL_DATABASE='docic_db'
-      - MYSQL_USER='root'
-      - MYSQL_PASSWORD='root'
+#setting the version of docker:
+version: '3.8'
+#initializing containners
+services :
+  sql_containner:
+   image: mysql:5.7.22
+   restart : always
+   env_file:
+     - .env
+   environment :
+      - MYSQL_DATABASE= ${db_name}
+      - MYSQL_USER= ${db_user}
+      - MYSQL_PASSWORD=${db_password}
       - MYSQL_ROOT_PASSWORD='root'
-    volumes:
-
-      - .dbdata:/var/lib/mysql
-    ports:
+   volumes:
+       
+     - ~/dbdata:/var/lib/mysql
+   ports:
     - "3305:3306"
+    
 
-  
+
+#setting the identity of the containner
+  django_container:
+  #  container_name: Dj_containner
+   build:
+     context: ./
+     dockerfile: Dockerfile
+    
+     
+     
+   ports:
+    - "8000:8000"
+   volumes:
+    #speciffing the location of files for docker
+     - .:/app
+   depends_on:
+     - sql_containner

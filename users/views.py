@@ -95,7 +95,7 @@ class listroleview(genericroleview,ListAPIView):
     '''
     pagination_class = CustomPagination
 class RoleViewSet(genericroleview,RetrieveUpdateDestroyAPIView,CreateAPIView):
-    '''return a role,create,update,create'''
+    '''return a role,create,update'''
     permission_classes = [IsAuthenticated]
     permission_object = 'roles'
     lookup_field = "id"	

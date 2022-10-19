@@ -2,10 +2,13 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
+import dotenv
+""" import environ """
 
 def main():
     """Run administrative tasks."""
+    dotenv.read_dotenv()
+    """ environ.Env.read_env() """
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'testproject.settings')
     try:
         from django.core.management import execute_from_command_line
