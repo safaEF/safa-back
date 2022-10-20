@@ -7,14 +7,12 @@ services :
    restart : always
    env_file:
      - .env
+  
    environment :
       - MYSQL_DATABASE= ${db_name}
       - MYSQL_USER= ${db_user}
       - MYSQL_PASSWORD=${db_password}
       - MYSQL_ROOT_PASSWORD='root'
-   volumes:
-       
-     - ~/dbdata:/var/lib/mysql
    ports:
     - "3305:3306"
     
@@ -31,8 +29,6 @@ services :
      
    ports:
     - "8000:8000"
-   volumes:
-    #speciffing the location of files for docker
-     - .:/app
+ 
    depends_on:
      - sql_containner

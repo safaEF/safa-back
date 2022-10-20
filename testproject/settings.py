@@ -33,17 +33,20 @@ if not DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'product',
     'orders',
     'users',
-    'rest_framework',
-    'corsheaders',
+    'rest_framework_swagger',
+    
+   
 ]
 
 
@@ -134,11 +137,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL='/media/'
+MEDIA_ROOT='/mediafolder/'
+STATIC_URL = '/static/'
+STATIC_ROOT='/staticfolder/' 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 AUTH_USER_MODEL = 'users.User'
 
+SWAGGER_SETTINGS = {
+   
+    'JSON_EDITOR':True,
+    'SHOW_REQUEST_HEADERS':True
+    
+} 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

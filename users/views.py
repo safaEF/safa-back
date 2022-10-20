@@ -11,6 +11,7 @@ from .permission import ViewPermissions
 from .serializers import UserSerializer, PermissionSerializer, RoleSerializer
 
 
+
 @api_view(['POST'])
 def register(request):
     data = request.data
@@ -176,3 +177,5 @@ class ProfilePasswordAPIView(APIView):
         user.save()
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+
