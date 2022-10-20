@@ -8,13 +8,10 @@ services :
    env_file:
      - .env
    environment :
-      - MYSQL_DATABASE= ${db_name}
-      - MYSQL_USER= ${db_user}
-      - MYSQL_PASSWORD=${db_password}
-      - MYSQL_ROOT_PASSWORD='root'
-   volumes:
-       
-     - ~/dbdata:/var/lib/mysql
+     - MYSQL_DATABASE=${db_name}
+     - MYSQL_USER=${db_user}
+     - MYSQL_PASSWORD=${db_password}
+     - MYSQL_ROOT_PASSWORD=${db_root_password}
    ports:
     - "3305:3306"
     
