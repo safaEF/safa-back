@@ -25,8 +25,10 @@ SECRET_KEY = os.environ.get("SECRET_KEY", default="unsafe-secret-key")
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-if not DEBUG:
-    ALLOWED_HOSTS += [os.environ.get('ALLOWED_HOST')]
+""" if not DEBUG:
+    ALLOWED_HOSTS += [os.environ.get('ALLOWED_HOST')] """
+REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema' }
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'orders',
     'users',
     'rest_framework_swagger',
+    
     
    
 ]
@@ -73,9 +76,12 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries' : {
+                'staticfiles': 'django.templatetags.static', }
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'testproject.wsgi.application'
 
@@ -83,7 +89,7 @@ WSGI_APPLICATION = 'testproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('db_name'),
@@ -93,7 +99,15 @@ DATABASES = {
         'PORT': '3306',
 
     }
-}
+} """  
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}  
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -134,7 +148,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL='/media/'
 MEDIA_ROOT='/mediafolder/'
-STATIC_URL = '/static/'
 STATIC_ROOT='/staticfolder/' 
 
 # Default primary key field type
