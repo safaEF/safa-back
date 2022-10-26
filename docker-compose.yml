@@ -2,19 +2,24 @@
 version: '3.8'
 #initializing containners
 services :
-  sql_containner:
+  db:
    image: mysql:5.7.22
    restart : always
-   env_file:
-     - .env
+  #  env_file:
+  #   - .env
   
-   environment :
-      - MYSQL_DATABASE= ${db_name}
-      - MYSQL_USER= ${db_user}
-      - MYSQL_PASSWORD=${db_password}
-      - MYSQL_ROOT_PASSWORD='root'
+  #  environment :
+  #     - MYSQL_DATABASE= ${db_name}
+  #     - MYSQL_USER= ${db_user}
+  #     - MYSQL_PASSWORD=${db_password}
+  #     - MYSQL_ROOT_PASSWORD='root'
+   environment:
+          MYSQL_DATABASE : 'docic_db'
+          MYSQL_USER : 'root'
+          MySQL_PASSWORD : 'root' 
+          MYSQL_ROOT_PASSWORD : 'root'
    ports:
-    - "3305:3306"
+      - "3305:3306"
     
 
 
@@ -31,4 +36,4 @@ services :
     - "8000:8000"
  
    depends_on:
-     - sql_containner
+     - db

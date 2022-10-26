@@ -42,13 +42,12 @@ class RoleRelatedField(serializers.RelatedField):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    role = RoleRelatedField(many=False, queryset=Role.objects.all())
+    role = RoleRelatedField(required=False, many=False, queryset=Role.objects.all())
 
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name', 'email', 'password', 'role']
         extra_kwargs = {
-            #prevent password from been sent back
             'password': {'write_only': True}
         }
 
@@ -56,6 +55,6 @@ class UserSerializer(serializers.ModelSerializer):
         password = validated_data.pop('password', None)
         instance = self.Meta.model(**validated_data)
         if password is not None:
-         instance.set_password(password)
+            instance.set_password(password)
         instance.save()
         return instance

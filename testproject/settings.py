@@ -27,7 +27,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 """ if not DEBUG:
     ALLOWED_HOSTS += [os.environ.get('ALLOWED_HOST')] """
-REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema' }
+REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'}
 
 # Application definition
 
@@ -43,12 +43,7 @@ INSTALLED_APPS = [
     'product',
     'orders',
     'users',
-    'rest_framework_swagger',
-    
-    
-   
-]
-
+    'rest_framework_swagger', ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -60,10 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    ]
-    
+]
 ROOT_URLCONF = 'testproject.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -76,7 +69,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'libraries' : {
+            'libraries': {
                 'staticfiles': 'django.templatetags.static', }
         },
     },
@@ -95,23 +88,19 @@ WSGI_APPLICATION = 'testproject.wsgi.application'
         'NAME': os.environ.get('db_name'),
         'USER': os.environ.get('db_user'),
         'PASSWORD': os.environ.get('db_password'),
-        'HOST': 'sql_containner',
+        'HOST': 'db',
         'PORT': '3306',
 
     }
-} """  
-
+} """
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}  
-
-
+}
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -146,24 +135,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL='/media/'
-MEDIA_ROOT='/mediafolder/'
-STATIC_ROOT='/staticfolder/' 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/mediafolder/'
+STATIC_ROOT = '/staticfolder/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 AUTH_USER_MODEL = 'users.User'
 
 SWAGGER_SETTINGS = {
-   
-    'JSON_EDITOR':True,
-    'SHOW_REQUEST_HEADERS':True
-    
-} 
-
+    'JSON_EDITOR': True,
+    'SHOW_REQUEST_HEADERS': True
+}
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_CREDENTIALS = True
-

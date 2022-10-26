@@ -17,5 +17,4 @@ class CustomPagination(PageNumberPagination):
                 'last_page': self.page.paginator.count,
                 'page': int(self.request.GET.get('page', DEFAULT_PAGE)),
                 'page_size': int(self.request.GET.get('page_size', self.page_size))
-            }
-        })
+            }})
