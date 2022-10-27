@@ -8,26 +8,27 @@ from rest_framework.generics import RetrieveAPIView, ListAPIView, GenericAPIView
 from testproject.pagination import CustomPagination
 from orders.models import Order, OrderItem
 from orders.serializers import OrderSerializer
-from users.auth import JWTAuthentication
+from users.authentication import JWTAuthentication
 
 
 class OrderGenericAPIView(GenericAPIView):
     queryset = Order.objects.all()
+    permission_classes = [IsAuthenticated]
     serializer_class = OrderSerializer
 
 
 class GetAllOrder(OrderGenericAPIView, ListAPIView):
     pagination_class = CustomPagination
+    permission_classes = [IsAuthenticated]
 
 
 class GetanOrder(OrderGenericAPIView, RetrieveAPIView):
     lookup_field = "id"
     lookup_url_kwarg = "pk"
+    permission_classes = [IsAuthenticated]
 
 
 class ExportAPIView(APIView):
-    # authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsAuthenticated]
     def get(self, request):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="order.csv"'

@@ -14,7 +14,6 @@ def generate_access_token(user):
     }
     encoded_jwt = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
     return encoded_jwt
-    # return jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
 
 
 class JWTAuthentication(BaseAuthentication):

@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+from django.urls import reverse_lazy
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +29,15 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 """ if not DEBUG:
     ALLOWED_HOSTS += [os.environ.get('ALLOWED_HOST')] """
-REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'}
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
 
 # Application definition
 
@@ -44,6 +54,31 @@ INSTALLED_APPS = [
     'orders',
     'users',
     'rest_framework_swagger', ]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:4200',
+)
+CORS_ALLOW_Methods = [
+    'DELETE',
+    'GET',
+    'OPTION',
+    'PATCH',
+    'POST',
+    'PUT'
+]
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept_encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-request-with'
+]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -149,6 +184,4 @@ SWAGGER_SETTINGS = {
 }
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ORIGIN_ALLOW_ALL = True
-
-CORS_ALLOW_CREDENTIALS = True
+LOGIN_URL = reverse_lazy("admin:login")

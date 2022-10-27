@@ -16,9 +16,8 @@ from rest_framework.mixins import DestroyModelMixin
 
 
 class GenericProductView(GenericAPIView):
-    # authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsAuthenticated]
     queryset = Product.objects.all()
+    permission_classes = [IsAuthenticated]
     serializer_class = ProductSerializer
 
 
@@ -31,6 +30,7 @@ class getallproduct(GenericProductView, ListModelMixin):
 class productapi(GenericProductView, CreateModelMixin, UpdateModelMixin, RetrieveModelMixin, DestroyModelMixin):
     lookup_field = "id"
     lookup_url_kwarg = "pk"
+    permission_classes = [IsAuthenticated]
 
 
 def get(self, request, *args, **kwargs):
@@ -53,6 +53,7 @@ class FileUploadView(UpdateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser,)
+    serializer_class = ProductSerializer
 
     def post(self, request):
         file = request.FILES['image']

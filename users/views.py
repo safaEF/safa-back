@@ -64,35 +64,35 @@ class AuthenticatedUser(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-
-def get(self, request):
-    data = UserSerializer(request.user).data
-    print(data)
-    if data['role']:
-        data['permissions'] = [p['name'] for p in data['role']['permissions']]
-        return Response(
-            data
-        )
+    def get(self, request):
+        data = UserSerializer(request.user).data
+        print(data)
+        if data['role']:
+            data['permissions'] = [p['name'] for p in data['role']['permissions']]
+            return Response(
+                data
+            )
 
 
 class PermissionAPIView(ListAPIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
     queryset = Permission.objects.all()
+    permission_classes = [IsAuthenticated]
     serializer_class = PermissionSerializer
 
 
-class genericroleview(GenericAPIView):
+class Genericroleview(GenericAPIView):
     authentication_classes = [JWTAuthentication]
     serializer_class = RoleSerializer
     queryset = Role.objects.all()
 
 
-class listroleview(genericroleview, ListAPIView):
+class Listroleview(Genericroleview, ListAPIView):
     pagination_class = CustomPagination
+    login_url = '/login/'
+    redirect_field_name = 'login'
 
 
-class RoleViewSet(genericroleview, RetrieveUpdateDestroyAPIView, CreateAPIView):
+class RoleViewSet(Genericroleview, RetrieveUpdateDestroyAPIView, CreateAPIView):
     permission_classes = [IsAuthenticated]
     permission_object = 'roles'
     lookup_field = "id"
@@ -107,6 +107,8 @@ class UserGenericAPIView(GenericAPIView):
 
 class UserlistAPI(UserGenericAPIView, ListAPIView):
     pagination_class = CustomPagination
+    login_url = '/login/'
+    redirect_field_name = 'login'
 
 
 class UserAPIView(UserGenericAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView):
@@ -115,21 +117,19 @@ class UserAPIView(UserGenericAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPI
     lookup_field = "id"
     lookup_url_kwarg = 'pk'
 
+    def perform_create(self, serializer):
+        serializer.save(role_id=self.request.data.get('role_id'))
 
-def perform_create(self, serializer):
-    serializer.save(role_id=self.request.data.get('role_id'))
-
-
-def update(self, request, *args, **kwargs):
-    instance = self.get_object()
-    user = User.objects.get(id=instance.id)
-    user.email = request.data.get('email')
-    user.first_name = request.data.get('first_name')
-    user.last_name = request.data.get('last_name')
-    roles = Role.objects.get(id=request.data.get('role_id'))
-    user.role = roles
-    user.save()
-    return Response(UserSerializer(user).data)
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        user = User.objects.get(id=instance.id)
+        user.email = request.data.get('email')
+        user.first_name = request.data.get('first_name')
+        user.last_name = request.data.get('last_name')
+        roles = Role.objects.get(id=request.data.get('role_id'))
+        user.role = roles
+        user.save()
+        return Response(UserSerializer(user).data)
 
 
 class ProfileInfoAPIView(UpdateAPIView):
@@ -139,22 +139,19 @@ class ProfileInfoAPIView(UpdateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
 
-
-def get_object(self):
-    return self.request.user
+    def get_object(self):
+        return self.request.user
 
 
 class ProfilePasswordAPIView(APIView):
-
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-
-def put(self, request, pk=None):
-    user = request.user
-    if request.data['password'] != request.data['password_confirm']:
-        raise exceptions.ValidationError('Passwords do not match')
-    user.set_password(request.data['password'])
-    user.save()
-    serializer = UserSerializer(user)
-    return Response(serializer.data)
+    def put(self, request, pk=None):
+        user = request.user
+        if request.data['password'] != request.data['password_confirm']:
+            raise exceptions.ValidationError('Passwords do not match')
+        user.set_password(request.data['password'])
+        user.save()
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
